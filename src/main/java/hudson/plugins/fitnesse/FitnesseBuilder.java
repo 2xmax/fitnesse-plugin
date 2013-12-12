@@ -38,6 +38,7 @@ public class FitnesseBuilder extends Builder {
 
 	public static final String START_FITNESSE = "fitnesseStart";
 	public static final String FITNESSE_HOST = "fitnesseHost";
+	public static final String FITNESSE_PUB_HOST = "fitnessePubHost";
 	public static final String FITNESSE_PORT = "fitnessePort";
 	public static final String FITNESSE_PORT_REMOTE = "fitnessePortRemote";
 	public static final String FITNESSE_PORT_LOCAL = "fitnessePortLocal";
@@ -119,6 +120,17 @@ public class FitnesseBuilder extends Builder {
 		  		return _LOCALHOST;
 		  	}
 		} else return getOption(FITNESSE_HOST, "unknown_host", environment);
+    }
+
+    /**
+     * referenced in config.jelly
+     */
+    public String getFitnessePubHost() {
+        return getOption(FITNESSE_PUB_HOST, "");
+    }
+
+    public String getFitnessePubHost(EnvVars environment) {
+        return getOption(FITNESSE_PUB_HOST, "", environment);
     }
 
 	/**
@@ -416,7 +428,7 @@ public class FitnesseBuilder extends Builder {
 				return newFitnesseBuilder(startFitnesseValue,
 						collectFormData(formData, new String[] {
 							FITNESSE_JDK, JAVA_OPTS, JAVA_WORKING_DIRECTORY,
-							PATH_TO_JAR, PATH_TO_ROOT, FITNESSE_PORT_LOCAL,
+							PATH_TO_JAR, PATH_TO_ROOT, FITNESSE_PORT_LOCAL, FITNESSE_PUB_HOST,
 							TARGET_PAGE, TARGET_IS_SUITE, HTTP_TIMEOUT, TEST_TIMEOUT, PATH_TO_RESULTS,
 							FITNESSE_ADDITIONAL_OPTIONS
 						})
@@ -424,7 +436,7 @@ public class FitnesseBuilder extends Builder {
 			}
 			return newFitnesseBuilder(startFitnesseValue,
 					collectFormData(formData, new String[] {
-						FITNESSE_HOST, FITNESSE_PORT_REMOTE,
+						FITNESSE_HOST, FITNESSE_PORT_REMOTE, FITNESSE_PUB_HOST,
 						TARGET_PAGE, TARGET_IS_SUITE, HTTP_TIMEOUT, TEST_TIMEOUT, PATH_TO_RESULTS
 					})
 			);

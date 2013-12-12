@@ -70,7 +70,8 @@ public class FitnesseExecutor {
 		return new FitnesseBuildAction(
 				builder.getFitnesseStart(),
 				builder.getFitnesseHost(build, environment), 
-				builder.getFitnessePort());
+				builder.getFitnessePort(),
+                builder.getFitnessePubHost());
 	}
 
 	private Proc startFitnesse(AbstractBuild<?,?> build, Launcher launcher, EnvVars envVars, PrintStream logger, StdConsole console) throws IOException {

@@ -13,16 +13,18 @@ import hudson.model.InvisibleAction;
  */
 public class FitnesseBuildAction extends InvisibleAction implements Action {
 
-	public static final FitnesseBuildAction NULL_ACTION = new FitnesseBuildAction(true, null, 0);
+	public static final FitnesseBuildAction NULL_ACTION = new FitnesseBuildAction(true, null, 0, null);
 	
 	private final String fitnesseHost;
 	private final int fitnessePort;
 	private final boolean fitnesseStarted;
+    private final String publicHost;
 
-	public FitnesseBuildAction(boolean fitnesseStarted, String fitnesseHost, int fitnessePort) {
+	public FitnesseBuildAction(boolean fitnesseStarted, String fitnesseHost, int fitnessePort, String publicHost) {
 		this.fitnesseStarted = fitnesseStarted;
 		this.fitnesseHost = fitnesseHost;
 		this.fitnessePort = fitnessePort;
+        this.publicHost = publicHost;
 	}
 
 	public String getLinkFor(String fitnessePage) {
@@ -30,17 +32,31 @@ public class FitnesseBuildAction extends InvisibleAction implements Action {
 	}
 	
 	public String getLinkFor(String fitnessePage, String hudsonHost) {
-		if (fitnesseStarted) return fitnessePage;
-		
-		String host = fitnesseHost;
-		if (hudsonHost != null && FitnesseBuilder._LOCALHOST.equals(fitnesseHost)) {
-			try {
-				host = new URL(hudsonHost).getHost();
-			} catch (MalformedURLException e) {
-			}
-		}
-		return String.format("<a href=\"http://%s:%s/%s\">%s</a>", 
-				host, fitnessePort, fitnessePage, fitnessePage);
+        return getLinkFor(fitnessePage, hudsonHost, fitnessePage);
 	}
 
+    public String getLinkFor(String fitnessePage, String hudsonHost, String title) {
+        Boolean doNotShowPublicUrl = fitnesseStarted;
+        String prefix;
+        if(this.publicHost != null && !this.publicHost.equals("")){
+            prefix = this.publicHost;
+            doNotShowPublicUrl = false;
+        } else {
+            String host = fitnesseHost;
+            if (hudsonHost != null && FitnesseBuilder._LOCALHOST.equals(fitnesseHost)) {
+                try {
+                    host = new URL(hudsonHost).getHost();
+                } catch (MalformedURLException e) {
+                }
+            }
+            prefix = String.format("http://%s:%s", host, fitnessePort);
+        }
+        if(!prefix.endsWith("/")){
+            prefix += "/";
+        }
+        if(doNotShowPublicUrl){
+            return title;
+        }
+        return String.format("<a href=\"%s%s\">%s</a>", prefix, fitnessePage, title);
+    }
 }

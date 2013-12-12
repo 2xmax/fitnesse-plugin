@@ -337,10 +337,13 @@ public class FitnesseResults extends TabulatedResult implements Comparable<Fitne
 			return "&nbsp;";
 		}
 
-        String url = String.format("http://localhost:8084/%s?pageHistory&resultDate=%s",getName(), pageCounts.resultsDate);
-        return String.format("<a href=\"%s\">%s</a>",
-                url, "Details");
-	}
+        FitnesseBuildAction buildAction = getOwner().getAction(FitnesseBuildAction.class);
+        if (buildAction == null) {
+            buildAction = FitnesseBuildAction.NULL_ACTION;
+        }
+        String testPage = getName() + "?pageHistory&resultDate=" + pageCounts.resultsDate;
+        return buildAction.getLinkFor(testPage, Hudson.getInstance().getRootUrl(), "Details");
+}
 
 	@Override
 	public String getErrorDetails() {
