@@ -51,6 +51,8 @@ public class FitnesseExecutor {
 	    		}
 	    		console.logIncrementalOutput(logger);
 	    	}
+
+            String publicUrl = builder.getDescriptor().getPublicUrl();
 	    	
 	    	FilePath resultsFilePath = getResultsFilePath(getWorkingDirectory(build), 
 	    												builder.getFitnessePathToXmlResultsOut(environment));
@@ -71,7 +73,7 @@ public class FitnesseExecutor {
 				builder.getFitnesseStart(),
 				builder.getFitnesseHost(build, environment), 
 				builder.getFitnessePort(),
-                builder.getFitnessePubHost());
+                builder.getDescriptor().getPublicUrl());
 	}
 
 	private Proc startFitnesse(AbstractBuild<?,?> build, Launcher launcher, EnvVars envVars, PrintStream logger, StdConsole console) throws IOException {

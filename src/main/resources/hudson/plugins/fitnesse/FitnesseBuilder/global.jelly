@@ -1,4 +1,8 @@
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" 
-xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
-  <!-- nothing to configure through "manage hudson" -->
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <f:section title="Fitnesse plugin">
+    <f:entry title="Public location" field="publicUrl"
+      description="Public location of FitNeese server e.g. https://contoso.com/fitnesse">
+      <f:textbox />
+    </f:entry>
+  </f:section>
 </j:jelly>
