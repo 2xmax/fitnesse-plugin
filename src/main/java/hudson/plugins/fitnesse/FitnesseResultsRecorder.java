@@ -28,8 +28,10 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.xml.transform.TransformerException;
 
+import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.StaplerRequest;
 
 public class FitnesseResultsRecorder extends Recorder {
 	
@@ -73,7 +75,7 @@ public class FitnesseResultsRecorder extends Recorder {
 			FitnesseResults results = getResults(listener.getLogger(), resultFiles);
 			if (results == null) return true; // no Fitnesse results found at all
 			
-			FitnesseResultsAction action = new FitnesseResultsAction(build, results);
+			FitnesseResultsAction action = new FitnesseResultsAction(build, this, results);
 			if (results.getBuildResult() != null) build.setResult(results.getBuildResult());
 			build.addAction(action);
 			return true;
@@ -156,6 +158,22 @@ public class FitnesseResultsRecorder extends Recorder {
      */
     @Extension
 	public static final class DescriptorImpl extends BuildStepDescriptor<Publisher> {
+        private String publicUrl;
+
+        public DescriptorImpl(){
+            load();
+        }
+
+        public String getPublicUrl() {
+            return publicUrl;
+        }
+
+        @Override
+        public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
+            publicUrl = formData.getString("publicUrl");
+            save();
+            return super.configure(req, formData);
+        }
 		
 		public FormValidation doCheckFitnessePathToXmlResultsIn(@QueryParameter String value) throws IOException, ServletException {
         	if (value.length()==0)

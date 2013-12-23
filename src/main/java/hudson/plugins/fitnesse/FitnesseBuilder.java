@@ -267,7 +267,6 @@ public class FitnesseBuilder extends Builder {
     	PrintStream logger = listener.getLogger();
 		logger.println(getClass().getName() + ": " + options);
 		FitnesseExecutor fitnesseExecutor = new FitnesseExecutor(this);
-        String parlerFrancais = getDescriptor().getPublicUrl();
 		return fitnesseExecutor.execute(build, launcher, logger, build.getEnvironment(listener));
 	}
 
@@ -284,10 +283,6 @@ public class FitnesseBuilder extends Builder {
      */
     @Extension
     public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
-        public DescriptorImpl() {
-            load();
-        }
-
     	public FormValidation doCheckFitnesseHost(@QueryParameter String value) throws IOException, ServletException {
     		if (value.length()==0)
     			return FormValidation.error("Please specify the host of the fitnesse instance.");
@@ -390,18 +385,6 @@ public class FitnesseBuilder extends Builder {
         	if (!value.endsWith("xml"))
         		return FormValidation.warning("File does not end with 'xml': is that correct?");
         	return FormValidation.ok();
-        }
-
-        private String publicUrl;
-        public String getPublicUrl() {
-            return publicUrl;
-        }
-
-        @Override
-        public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
-            publicUrl = formData.getString("publicUrl");
-            save();
-            return super.configure(req, formData);
         }
 
         /**

@@ -5,13 +5,18 @@ import hudson.tasks.test.AbstractTestResultAction;
 
 import org.kohsuke.stapler.StaplerProxy;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class FitnesseResultsAction extends AbstractTestResultAction<FitnesseResultsAction> implements StaplerProxy {
 	private static final long serialVersionUID = 1L;
-	private FitnesseResults results;
+	private final FitnesseResults results;
+	private final FitnesseResultsRecorder publisher;
 	
-	protected FitnesseResultsAction(AbstractBuild<?, ?> owner, FitnesseResults results) {
+	protected FitnesseResultsAction(AbstractBuild<?, ?> owner, FitnesseResultsRecorder publisher, FitnesseResults results) {
 		super(owner);
 		this.results = results;
+		this.publisher = publisher;
 		results.setOwner(owner);
 	}
 
@@ -73,4 +78,32 @@ public class FitnesseResultsAction extends AbstractTestResultAction<FitnesseResu
 		return String.format("(%s, %d pages: %d wrong or with exceptions, %d ignored)",
 				getResult().getName(), getTotalCount(), getFailCount(), getSkipCount());
 	}
+
+    public String getLinkFor(String fitnessePage) {
+        return getLinkFor(fitnessePage, null);
+    }
+
+    public String getLinkFor(String fitnessePage, String hudsonHost) {
+        return getLinkFor(fitnessePage, hudsonHost, fitnessePage);
+    }
+
+    public String getLinkFor(String fitnessePage, String hudsonHost, String title) {
+        String prefix = "";
+
+        if(this.publisher != null){
+            prefix = publisher.getDescriptor().getPublicUrl();
+        } else {
+            if(hudsonHost != null){
+                prefix = hudsonHost;
+            }
+        }
+
+        if(prefix == null || prefix.equals("")){
+            return title;
+        }
+        if(!prefix.endsWith("/")){
+            prefix += "/";
+        }
+        return String.format("<a href=\"%s%s\">%s</a>", prefix, fitnessePage, title);
+    }
 }

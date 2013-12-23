@@ -322,11 +322,8 @@ public class FitnesseResults extends TabulatedResult implements Comparable<Fitne
 	 * referenced in body.jelly
 	 */
 	public String toHtml(FitnesseResults results) {
-		FitnesseBuildAction buildAction = getOwner().getAction(FitnesseBuildAction.class);
-		if (buildAction == null) {
-			buildAction = FitnesseBuildAction.NULL_ACTION;
-		}
-		return buildAction.getLinkFor(results.getName(), Hudson.getInstance().getRootUrl());
+		FitnesseResultsAction resultAction = getOwner().getAction(FitnesseResultsAction.class);
+		return resultAction.getLinkFor(results.getName(), Hudson.getInstance().getRootUrl());
 	}
 
 	/**
@@ -336,13 +333,9 @@ public class FitnesseResults extends TabulatedResult implements Comparable<Fitne
 		if (details == null) {
 			return "&nbsp;";
 		}
-
-        FitnesseBuildAction buildAction = getOwner().getAction(FitnesseBuildAction.class);
-        if (buildAction == null) {
-            buildAction = FitnesseBuildAction.NULL_ACTION;
-        }
+		FitnesseResultsAction resultAction = getOwner().getAction(FitnesseResultsAction.class);
         String testPage = getName() + "?pageHistory&resultDate=" + pageCounts.resultsDate;
-        return buildAction.getLinkFor(testPage, Hudson.getInstance().getRootUrl(), "Details");
+        return resultAction.getLinkFor(testPage, Hudson.getInstance().getRootUrl(), "Details");
 }
 
 	@Override

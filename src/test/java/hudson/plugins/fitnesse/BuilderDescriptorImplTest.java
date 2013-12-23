@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class BuilderDescriptorImplTest {
-	/*private DescriptorImpl descriptor;
+	private DescriptorImpl descriptor;
 	
 	public BuilderDescriptorImplTest() {
 		descriptor = new DescriptorImpl();
@@ -146,5 +146,5 @@ public class BuilderDescriptorImplTest {
 	public void positiveHttpTimeoutShouldBeOk() throws Exception {
 		Assert.assertEquals(Kind.OK,
 				descriptor.doCheckFitnesseHttpTimeout("1").kind);
-	} */
+	}
 }

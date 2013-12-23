@@ -43,16 +43,13 @@ public class FitnesseExecutor {
 		Proc fitnesseProc = null;
 		StdConsole console = new StdConsole();
 		try {
-			build.addAction(getFitnesseBuildAction(build, environment));
-	    	if (builder.getFitnesseStart()) {
+			if (builder.getFitnesseStart()) {
 	    		fitnesseProc = startFitnesse(build, launcher, environment, logger, console);
 	    		if (!procStarted(fitnesseProc, logger, console)) {
     				return false;
 	    		}
 	    		console.logIncrementalOutput(logger);
 	    	}
-
-            String publicUrl = builder.getDescriptor().getPublicUrl();
 	    	
 	    	FilePath resultsFilePath = getResultsFilePath(getWorkingDirectory(build), 
 	    												builder.getFitnessePathToXmlResultsOut(environment));
@@ -66,14 +63,6 @@ public class FitnesseExecutor {
 			killProc(logger, fitnesseProc);
 			console.logIncrementalOutput(logger);
 		}
-	}
-
-	private FitnesseBuildAction getFitnesseBuildAction(AbstractBuild<?,?> build, EnvVars environment) throws InterruptedException, IOException {
-		return new FitnesseBuildAction(
-				builder.getFitnesseStart(),
-				builder.getFitnesseHost(build, environment), 
-				builder.getFitnessePort(),
-                builder.getDescriptor().getPublicUrl());
 	}
 
 	private Proc startFitnesse(AbstractBuild<?,?> build, Launcher launcher, EnvVars envVars, PrintStream logger, StdConsole console) throws IOException {
