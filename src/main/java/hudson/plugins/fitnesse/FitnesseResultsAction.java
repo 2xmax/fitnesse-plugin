@@ -93,9 +93,7 @@ public class FitnesseResultsAction extends AbstractTestResultAction<FitnesseResu
         if(this.publisher != null){
             prefix = publisher.getDescriptor().getPublicUrl();
         } else {
-            if(hudsonHost != null){
-                prefix = hudsonHost;
-            }
+            prefix = new FitnesseResultsRecorder.DescriptorImpl().getPublicUrl();
         }
 
         if(prefix == null || prefix.equals("")){
