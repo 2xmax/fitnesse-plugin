@@ -13,4 +13,5 @@ Binary HPI is located [here](https://www.dropbox.com/sh/ugkjy8vatv419j3/0mT_R8dB
 ToDo
 ==============================
 1. Implement HTML results parsing instead of XML.
+2. Add execution time column
 
